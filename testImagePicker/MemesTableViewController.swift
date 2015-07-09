@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 
 class MemesTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    var memes = [Meme]()
+    var memes: [Meme]!
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)

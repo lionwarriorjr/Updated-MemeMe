@@ -10,7 +10,7 @@ import Foundation
 
 import UIKit
 
-class MemesCollectionViewController: UIViewController, UICollectionViewDataSource {
+class MemesCollectionViewController: UICollectionViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var memes = [Meme]()
 
@@ -34,30 +34,32 @@ class MemesCollectionViewController: UIViewController, UICollectionViewDataSourc
         self.performSegueWithIdentifier("showEditorFromCollection", sender: self)
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return self.memes.count;
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as! CollectionViewCell
         
         //construct collection view cell
         //indexPath.item in collectionView instead of indexPath.row
-        let currentMeme = self.memes[indexPath.item]
+        let currentMeme = self.memes[indexPath.row]
         //cell.setText(currentMeme.topText, bottomString: currentMeme.bottomText)
         
-        cell.background?.image = currentMeme.memedImage
+        let imageView = UIImageView(image: currentMeme.memedImage)
+        
+        cell.background! = imageView
         
         return cell;
     }
     
-    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+    override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         
         let detailVC = self.storyboard?.instantiateViewControllerWithIdentifier("DetailViewController") as! DetailViewController
         
-        detailVC.meme = memes[indexPath.item]
+        detailVC.meme = memes[indexPath.row]
         
         self.navigationController?.pushViewController(detailVC, animated: true)
     }

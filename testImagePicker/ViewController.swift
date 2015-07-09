@@ -52,8 +52,8 @@ class ViewController: UIViewController,UIImagePickerControllerDelegate, UINaviga
         //must force unwrap UIBarButtonItem?
         self.navigationItem.leftBarButtonItem!.enabled = (self.imageView.image == nil) ? false : true
         
-        //self.subscribeToKeyboardNotifications()
-        // self.subscribeToKeyboardHidden()
+//        self.subscribeToKeyboardNotifications()
+//        self.subscribeToKeyboardHidden()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -83,7 +83,7 @@ class ViewController: UIViewController,UIImagePickerControllerDelegate, UINaviga
     
         //needs to take closure
         activityVC.completionWithItemsHandler = { (s: String!, ok: Bool, items: [AnyObject]!, err:NSError!) -> Void in
-            var meme = Meme(topText: self.topTextField.text, bottomText: self.bottomTextField.text, originalImage: self.imageView.image!, memedImage: memedImage) //replaced generate memedImage()
+            var meme = Meme(topText: self.topTextField.text, bottomText: self.bottomTextField.text, originalImage: self.imageView.image!, memedImage: memedImage) //replaced generatememedImage()
             
             (UIApplication.sharedApplication().delegate as! AppDelegate).memeModel.append(meme)
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -162,37 +162,37 @@ class ViewController: UIViewController,UIImagePickerControllerDelegate, UINaviga
     }
     
     //want a notification parameter as supplied by subscribeToKeyboardNotifications() call
-//    func keyboardWillShow(notification: NSNotification) {
-//        self.view.frame.origin.y -= getKeyboardHeight(notification)
-//    }
-//
-//    func keyboardWillHide(notification: NSNotification) {
-//        self.view.frame.origin.y = self.view.frame.origin.y + getKeyboardHeight(notification)
-//    }
-//    
-//    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
-//        //userInfo dictionary holds user information like the size of the keyboard
-//        let userInfo = notification.userInfo
-//        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as NSValue
-//        return keyboardSize.CGRectValue().height
-//    }
-//
-//    func subscribeToKeyboardHidden() {
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide", name: UIKeyboardWillHideNotification, object: nil)
-//    }
-//    
-//    func subscribeToKeyboardNotifications() {
-//        //notification of when UIKeyboardWillShow
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow", name: UIKeyboardWillShowNotification, object: nil)
-//    }
-//    
-//    func unsubscribeFromKeyboardNotifications() {
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name:
-//            UIKeyboardWillShowNotification, object: nil)
-//    }
-//    
-//    func unsubscribeFromKeyboardHidden() {
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
-//    }
+    func keyboardWillShow(notification: NSNotification) {
+        self.view.frame.origin.y -= getKeyboardHeight(notification)
+    }
+
+    func keyboardWillHide(notification: NSNotification) {
+        self.view.frame.origin.y += getKeyboardHeight(notification)
+    }
+    
+    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
+        //userInfo dictionary holds user information like the size of the keyboard
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
+        return keyboardSize.CGRectValue().height
+    }
+
+    func subscribeToKeyboardHidden() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func subscribeToKeyboardNotifications() {
+        //notification of when UIKeyboardWillShow
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow", name: UIKeyboardWillShowNotification, object: nil)
+    }
+    
+    func unsubscribeFromKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:
+            UIKeyboardWillShowNotification, object: nil)
+    }
+    
+    func unsubscribeFromKeyboardHidden() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
 }
 
